@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -33,6 +35,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Map::class, mappedBy="creator", orphanRemoval=true)
+     */
+    private $createdMaps;
+
+    public function __construct()
+    {
+        $this->createdMaps = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,5 +117,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Map[]
+     */
+    public function getCreatedMaps(): Collection
+    {
+        return $this->createdMaps;
+    }
+
+    public function addCreatedMap(Map $createdMap): self
+    {
+        if (!$this->createdMaps->contains($createdMap)) {
+            $this->createdMaps[] = $createdMap;
+            $createdMap->setCreator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedMap(Map $createdMap): self
+    {
+        if ($this->createdMaps->contains($createdMap)) {
+            $this->createdMaps->removeElement($createdMap);
+            // set the owning side to null (unless already changed)
+            if ($createdMap->getCreator() === $this) {
+                $createdMap->setCreator(null);
+            }
+        }
+
+        return $this;
     }
 }
