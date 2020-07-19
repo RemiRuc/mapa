@@ -1,4 +1,4 @@
-import DummyAPI from './api/dummy'
+import MapAPI from './api/map'
 
 export default {
     namespaced: true,
@@ -14,7 +14,7 @@ export default {
         error(state) {
             return state.error
         },
-        data(state) {
+        map(state) {
             return state.data
         }
      },
@@ -36,10 +36,10 @@ export default {
         }
      },
      actions: {
-        async find({ commit }) {
+        async findOne({ commit }, id) {
             commit('fetching_data')
             try {
-                let response = await DummyAPI.get()
+                let response = await MapAPI.findOne(id)
                 commit('fetching_data_success', response.data)
                 return response.data
             } catch (error) {

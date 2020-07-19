@@ -5,9 +5,11 @@
 <script>
 export default {
     name: 'Map',
+    props: ['pins'],
     data() {
         return {
-            map: null
+            map: null,
+            markers : []
         }
     },
     mounted() {
@@ -18,7 +20,16 @@ export default {
             minZoom: 1,
             maxZoom: 16,
             ext: 'jpg'
-        }).addTo(this.map);
+        }).addTo(this.map)
+        this.setMarkers()
+    },
+    methods: {
+        setMarkers() {
+            this.markers = []
+            this.pins.forEach(pin => {
+                this.markers.push(L.marker([pin.lat, pin.lng]).addTo(this.map))
+            })
+        }
     }
 }
 </script>
