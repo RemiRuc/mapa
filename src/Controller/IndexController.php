@@ -35,6 +35,7 @@ final class IndexController extends AbstractController
         if (! empty($user)) {
             $userClone = clone $user;
             $userClone->setPassword('');
+            $userClone->removeAllCreatedMap();
             $data = $this->serializer->serialize($userClone, JsonEncoder::FORMAT);
         }
 

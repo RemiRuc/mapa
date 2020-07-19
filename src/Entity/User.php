@@ -137,6 +137,13 @@ class User implements UserInterface
         return $this;
     }
 
+    public function removeAllCreatedMap(): self
+    {
+        $this->createdMaps = new ArrayCollection();
+
+        return $this;
+    }
+
     public function removeCreatedMap(Map $createdMap): self
     {
         if ($this->createdMaps->contains($createdMap)) {
