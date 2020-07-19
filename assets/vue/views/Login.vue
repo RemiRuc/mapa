@@ -4,7 +4,7 @@
     <form @submit.prevent="performLogin()">
       <input v-model="username" type="text">
       <input v-model="password" type="password" />
-      <input type="submit" value="Login"/>
+      <input class="btn" type="submit" value="Login"/>
     </form>
     <p v-if="hasError">{{error}}</p>
     <p v-if="isLoading">Loading...</p>
